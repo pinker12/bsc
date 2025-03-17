@@ -233,8 +233,11 @@ func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	if ctx.IsSet(utils.OverrideFixedTurnLength.Name) {
 		params.FixedTurnLength = ctx.Uint64(utils.OverrideFixedTurnLength.Name)
 	}
-
+	// 启动一个Eth Service
 	backend, eth := utils.RegisterEthService(stack, &cfg.Eth)
+
+	// 启动一个Quant Service
+	utils.RegisterQuantService(backend, eth)
 
 	// Create gauge with geth system and build information
 	if eth != nil { // The 'eth' backend may be nil in light mode

@@ -36,6 +36,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ethereum/go-ethereum/quant"
+
 	"github.com/ethereum/go-ethereum/accounts"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/beacon/fakebeacon"
@@ -2310,6 +2312,14 @@ func RegisterEthService(stack *node.Node, cfg *ethconfig.Config) (ethapi.Backend
 	}
 	stack.RegisterAPIs(tracers.APIs(backend.APIBackend))
 	return backend.APIBackend, backend
+}
+
+// RegisterQuantService
+// The second return value is the full node instance.
+func RegisterQuantService(apibackend ethapi.Backend, eth *eth.Ethereum) {
+	quant := quant.NewQuant(apibackend, eth)
+	go quant.Loop()
+	return
 }
 
 // RegisterEthStatsService configures the Ethereum Stats daemon and adds it to the node.

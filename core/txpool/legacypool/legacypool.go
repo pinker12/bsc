@@ -434,6 +434,7 @@ func (pool *LegacyPool) loop() {
 			}()
 			pool.mu.RUnlock()
 			if len(reannoTxs) > 0 {
+				// 发送订阅这个信息的ch
 				pool.reannoTxFeed.Send(core.ReannoTxsEvent{Txs: reannoTxs})
 			}
 
